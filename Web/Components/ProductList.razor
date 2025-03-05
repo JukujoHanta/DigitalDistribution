@@ -1,0 +1,38 @@
+﻿@using Radzen.Blazor
+@using Microsoft.EntityFrameworkCore
+@using Web.Data
+@inject ApplicationDbContext DbContext
+@inject NavigationManager NavigationManager
+
+
+<RadzenDataGrid @ref="_grid" Data="@FilteredProducts" AllowFiltering="true" AllowSorting="true" AllowPaging="true" PageSize="10">
+    <Columns>
+        <RadzenDataGridColumn Property="Name" Title="Название" Width="200px" />
+        <RadzenDataGridColumn Property="Price" Title="Цена" FormatString="c" Width="120px" />
+        <RadzenDataGridColumn Property="ReleaseDate" Title="Дата выхода" FormatString="d" Width="150px" />
+        <RadzenDataGridColumn Title="Теги">
+            <Template Context="product">
+                <RadzenButton Text="Подробнее" Click="@(() => NavigateToDetail(product.Id))" />
+            </Template>
+        </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn Title="Photo">
+            <Template Context="product">
+                <RadzenButton Text="Подробнее" Click="@(() => NavigateToDetail(product.Id))" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    private RadzenDataGrid<Product> _grid;
+
+    private List<Product> FilteredProducts = new();
+
+    protected override void OnInitialized()
+    {
+        FilteredProducts = DbContext.Products.Include(p => p.Tags).ToList();
+    }
+
+    private void NavigateToDetail(int productId) => NavigationManager.NavigateTo($"/product/{productId}");
+}

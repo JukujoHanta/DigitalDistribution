@@ -1,0 +1,17 @@
+mkdir DigitalDistribution
+cd DigitalDistribution
+dotnet new sln -n DigitalDistribution
+
+dotnet new classlib -n DigitalDistribution.Shared
+dotnet new webapi -n DigitalDistribution.Api
+dotnet new blazor -n DigitalDistribution.Web
+dotnet new maui-blazor -n DigitalDistribution.Maui
+
+dotnet sln add DigitalDistribution.Shared/DigitalDistribution.Shared.csproj
+dotnet sln add DigitalDistribution.Api/DigitalDistribution.Api.csproj
+dotnet sln add DigitalDistribution.Web/DigitalDistribution.Web.csproj
+dotnet sln add DigitalDistribution.Maui/DigitalDistribution.Maui.csproj
+
+dotnet add DigitalDistribution.Api/DigitalDistribution.Api.csproj reference DigitalDistribution.Shared/DigitalDistribution.Shared.csproj
+dotnet add DigitalDistribution.Web/DigitalDistribution.Web.csproj reference DigitalDistribution.Shared/DigitalDistribution.Shared.csproj
+dotnet add DigitalDistribution.Maui/DigitalDistribution.Maui.csproj reference DigitalDistribution.Shared/DigitalDistribution.Shared.csproj
